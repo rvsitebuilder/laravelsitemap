@@ -2,14 +2,13 @@
 
 namespace Rvsitebuilder\Laravelsitemap;
 
-use Illuminate\Support\Facades\Config;
 use GuzzleHttp\RequestOptions;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Sitemap\SitemapServiceProvider;
 
 class LaravelsitemapServiceProvider extends ServiceProvider
 {
-
     /**
      * Boot the application events.
      */
@@ -40,15 +39,21 @@ class LaravelsitemapServiceProvider extends ServiceProvider
     {
         // overide config
         $laravelsitemap_COOKIES = config('rvsitebuilder/laravelsitemap.COOKIES');
-        $laravelsitemap_COOKIES = ('1' == $laravelsitemap_COOKIES ? true : $laravelsitemap_COOKIES);
+        $laravelsitemap_COOKIES = ($laravelsitemap_COOKIES == '1' ? true : $laravelsitemap_COOKIES);
         $laravelsitemap_ALLOW_REDIRECTS = config('rvsitebuilder/laravelsitemap.ALLOW_REDIRECTS');
-        $laravelsitemap_ALLOW_REDIRECTS = ('1' == $laravelsitemap_ALLOW_REDIRECTS ? true : $laravelsitemap_ALLOW_REDIRECTS);
+        $laravelsitemap_ALLOW_REDIRECTS = ($laravelsitemap_ALLOW_REDIRECTS == '1' ? true : $laravelsitemap_ALLOW_REDIRECTS);
 
-        Config::set('sitemap.guzzle_options', [
-            RequestOptions::COOKIES => $laravelsitemap_COOKIES,
-            RequestOptions::CONNECT_TIMEOUT => config('rvsitebuilder/laravelsitemap.CONNECT_TIMEOUT'),
-            RequestOptions::TIMEOUT => config('rvsitebuilder/laravelsitemap.TIMEOUT'),
-            RequestOptions::ALLOW_REDIRECTS => $laravelsitemap_ALLOW_REDIRECTS,
+        Config::set([
+            'override' => [
+                'sitemap' => [
+                    'guzzle_options' => [
+                        RequestOptions::COOKIES => $laravelsitemap_COOKIES,
+                        RequestOptions::CONNECT_TIMEOUT => config('rvsitebuilder/laravelsitemap.CONNECT_TIMEOUT'),
+                        RequestOptions::TIMEOUT => config('rvsitebuilder/laravelsitemap.TIMEOUT'),
+                        RequestOptions::ALLOW_REDIRECTS => $laravelsitemap_ALLOW_REDIRECTS,
+                    ],
+                ],
+            ],
         ]);
     }
 
@@ -65,7 +70,9 @@ class LaravelsitemapServiceProvider extends ServiceProvider
      */
     public function defineVendorPublish(): void
     {
-        $this->publishes([__DIR__ . '/../public' => public_path('vendor/rvsitebuilder/laravelsitemap')], 'public');
+        $this->publishes([
+            __DIR__ . '/../public' => public_path('vendor/rvsitebuilder/laravelsitemap'),
+        ], 'public');
     }
 
     /**
@@ -92,6 +99,6 @@ class LaravelsitemapServiceProvider extends ServiceProvider
         // Load vendor service provider
         $this->app->register(SitemapServiceProvider::class);
 
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'rvsitebuilder/laravelsitemap');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'rvsitebuilder/laravelsitemap');
     }
 }
