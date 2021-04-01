@@ -1,3 +1,6 @@
+.privateapp
+composer.lock
+rvsitebuilder.json
 node_modules
 vendor
 public
