@@ -2,7 +2,6 @@
 
 namespace Rvsitebuilder\Laravelsitemap;
 
-use GuzzleHttp\RequestOptions;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Spatie\Sitemap\SitemapServiceProvider;
@@ -27,34 +26,11 @@ class LaravelsitemapServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->registerConfig();
-        $this->registerOverideConfig();
     }
 
     public function defineMigrate(): void
     {
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-    }
-
-    public function registerOverideConfig(): void
-    {
-        // overide config
-        $laravelsitemap_COOKIES = config('rvsitebuilder/laravelsitemap.COOKIES');
-        $laravelsitemap_COOKIES = ($laravelsitemap_COOKIES == '1' ? true : $laravelsitemap_COOKIES);
-        $laravelsitemap_ALLOW_REDIRECTS = config('rvsitebuilder/laravelsitemap.ALLOW_REDIRECTS');
-        $laravelsitemap_ALLOW_REDIRECTS = ($laravelsitemap_ALLOW_REDIRECTS == '1' ? true : $laravelsitemap_ALLOW_REDIRECTS);
-
-        Config::set([
-            'override' => [
-                'sitemap' => [
-                    'guzzle_options' => [
-                        RequestOptions::COOKIES => $laravelsitemap_COOKIES,
-                        RequestOptions::CONNECT_TIMEOUT => config('rvsitebuilder/laravelsitemap.CONNECT_TIMEOUT'),
-                        RequestOptions::TIMEOUT => config('rvsitebuilder/laravelsitemap.TIMEOUT'),
-                        RequestOptions::ALLOW_REDIRECTS => $laravelsitemap_ALLOW_REDIRECTS,
-                    ],
-                ],
-            ],
-        ]);
     }
 
     /**
