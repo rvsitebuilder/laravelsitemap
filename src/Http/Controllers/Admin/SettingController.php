@@ -38,36 +38,36 @@ class SettingController extends Controller
             }
             CoreConfig::updateOrCreate(
                 [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_COOKIES',
-],
+                    'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_COOKIES',
+                ],
                 [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_COOKIES',
-'value' => $valueCookies,
-]
+                    'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_COOKIES',
+                    'value' => $valueCookies,
+                ]
             );
 
             if (isset($params['setting_connect_timeout'])) {
                 $params['setting_connect_timeout'] = (is_numeric($params['setting_connect_timeout']) ? $params['setting_connect_timeout'] : 10);
                 CoreConfig::updateOrCreate(
                     [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_CONNECT_TIMEOUT',
-],
+                        'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_CONNECT_TIMEOUT',
+                    ],
                     [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_CONNECT_TIMEOUT',
-'value' => $params['setting_connect_timeout'],
-]
+                        'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_CONNECT_TIMEOUT',
+                        'value' => $params['setting_connect_timeout'],
+                    ]
                 );
             }
             if (isset($params['setting_timeout'])) {
                 $params['setting_timeout'] = (is_numeric($params['setting_timeout']) ? $params['setting_timeout'] : 10);
                 CoreConfig::updateOrCreate(
                     [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_TIMEOUT',
-],
+                        'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_TIMEOUT',
+                    ],
                     [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_TIMEOUT',
-'value' => $params['setting_timeout'],
-]
+                        'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_TIMEOUT',
+                        'value' => $params['setting_timeout'],
+                    ]
                 );
             }
             $valueAllowRedirects = false;
@@ -77,24 +77,24 @@ class SettingController extends Controller
 
             CoreConfig::updateOrCreate(
                 [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_ALLOW_REDIRECTS',
-],
+                    'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_ALLOW_REDIRECTS',
+                ],
                 [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_ALLOW_REDIRECTS',
-'value' => $valueAllowRedirects,
-]
+                    'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_ALLOW_REDIRECTS',
+                    'value' => $valueAllowRedirects,
+                ]
             );
 
             if (isset($params['setting_leaving_out'])) {
                 $params['setting_leaving_out'] = ($params['setting_leaving_out'] != '' ? $params['setting_leaving_out'] : '');
                 CoreConfig::updateOrCreate(
                     [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_leaving_out',
-],
+                        'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_leaving_out',
+                    ],
                     [
-'key' => 'rvsitebuilder/laravelsitemap.laravelsitemap_leaving_out',
-'value' => $params['setting_leaving_out'],
-]
+                        'key' => 'rvsitebuilder.laravelsitemap.laravelsitemap_leaving_out',
+                        'value' => $params['setting_leaving_out'],
+                    ]
                 );
             }
 
