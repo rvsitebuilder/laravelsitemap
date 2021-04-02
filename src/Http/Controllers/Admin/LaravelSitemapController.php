@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Log;
 use Spatie\Sitemap\SitemapGenerator;
 use Spatie\Sitemap\Tags\Url as SitemapUrl;
@@ -17,8 +16,6 @@ class LaravelSitemapController extends Controller
 
     /**
      * Display genarate sitemap page.
-     *
-     * @param Request $request
      */
     public function index(Request $request)
     {
@@ -30,7 +27,7 @@ class LaravelSitemapController extends Controller
         ]);
     }
 
-    public function generate(Request $request)
+    public function generate(Request $request): \Illuminate\Http\JsonResponse
     {
         try {
             // Clear cache
@@ -74,7 +71,7 @@ class LaravelSitemapController extends Controller
      *
      * @return
      */
-    public function clearcache()
+    public function clearcache(): bool
     {
         Artisan::call('cache:clear');
         Artisan::call('view:clear');
@@ -92,19 +89,19 @@ class LaravelSitemapController extends Controller
      *
      * @return
      */
-    public function createSitemapFile()
+    public function createSitemapFile(): bool
     {
         SitemapGenerator::create(secure_url('/'))->hasCrawled(function (SitemapUrl $url) {
             $arr_leaving_out = [];
-            $laravelsitemap_leaving_out = config('rvsitebuilder/laravelsitemap.leaving_out');
-            if ('' != trim($laravelsitemap_leaving_out)) {
+            $laravelsitemap_leaving_out = config('rvsitebuilder.laravelsitemap.leaving_out');
+            if (trim($laravelsitemap_leaving_out) != '') {
                 $arr_leaving_out = explode(',', $laravelsitemap_leaving_out);
                 if (\count($arr_leaving_out) > 0) {
                     $arr_leaving_out = array_map('trim', $arr_leaving_out); //trim space in all srray
                 }
             }
 
-            if (\in_array($url->segment(1), $arr_leaving_out)) {
+            if (\in_array($url->segment(1), $arr_leaving_out, true)) {
                 return;
             }
 
@@ -122,13 +119,13 @@ class LaravelSitemapController extends Controller
      *
      * @return
      */
-    public function getSitemapFileDescription($path)
+    public function getSitemapFileDescription($path): string
     {
         $last_created = '';
         if (file_exists($path)) {
             $dt = date('Y-m-d H:i:s', filemtime($path));
             $dt = Date::parse($dt)->timezone('Asia/Bangkok')->format('d/m/Y H:i:s');
-            $last_created = '<a href="' . secure_url('/') . '/' . $path . "\" target=\"_blank\">$path</a> was last modified: " . $dt . ' 
+            $last_created = '<a href="' . secure_url('/') . '/' . $path . "\" target=\"_blank\">${path}</a> was last modified: " . $dt . '
       <a href="' . route('admin.laravelsitemap.laravelsitemap.download') . '" target="_blank">Download</a>';
         }
 

@@ -75,6 +75,6 @@ class LaravelsitemapServiceProvider extends ServiceProvider
         // Load vendor service provider
         $this->app->register(SitemapServiceProvider::class);
 
-        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'rvsitebuilder/laravelsitemap');
+        $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'rvsitebuilder.laravelsitemap');
     }
 }
