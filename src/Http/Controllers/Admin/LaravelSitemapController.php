@@ -5,10 +5,8 @@ namespace Rvsitebuilder\Laravelsitemap\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Log;
-use Spatie\Sitemap\SitemapGenerator;
-use Spatie\Sitemap\Tags\Url as SitemapUrl;
+use Rvsitebuilder\Laravelsitemap\Lib\CreateSiteMap;
 
 class LaravelSitemapController extends Controller
 {
@@ -19,7 +17,7 @@ class LaravelSitemapController extends Controller
      */
     public function index(Request $request)
     {
-        $last_created = $this->getSitemapFileDescription($this->path_sitemap);
+        $last_created = CreateSiteMap::getSitemapFileDescription($this->path_sitemap);
 
         return view('rvsitebuilder/laravelsitemap::admin.laravelsitemap.index', [
             'url' => secure_url('/'),
@@ -31,13 +29,17 @@ class LaravelSitemapController extends Controller
     {
         try {
             // Clear cache
-            $this->clearcache();
+            Artisan::call('cache:clear');
+            Artisan::call('config:clear');
+            Artisan::call('route:clear');
+            Artisan::call('view:clear');
+            Artisan::call('rvsitebuilder:resetserviceprovider');
 
             // Genarate Sitemap
-            $this->createSitemapFile();
+            CreateSiteMap::createSitemapFile($this->path_sitemap);
 
             // get file created
-            $last_created = $this->getSitemapFileDescription($this->path_sitemap);
+            $last_created = CreateSiteMap::getSitemapFileDescription($this->path_sitemap);
 
             // Response data
             return response()->json([
@@ -62,73 +64,5 @@ class LaravelSitemapController extends Controller
                 ->header('Content-type', 'text/xml')
                 ->header('Content-Disposition', 'attachment; filename="' . $this->path_sitemap . '');
         }
-    }
-
-    /**
-     * clearcache.
-     *
-     * @param
-     *
-     * @return
-     */
-    public function clearcache(): bool
-    {
-        Artisan::call('cache:clear');
-        Artisan::call('view:clear');
-        Artisan::call('config:clear');
-        Artisan::call('route:clear');
-        Artisan::call('rvsitebuilder:resetserviceprovider');
-
-        return true;
-    }
-
-    /**
-     * createSitemapFile.
-     *
-     * @param
-     *
-     * @return
-     */
-    public function createSitemapFile(): bool
-    {
-        SitemapGenerator::create(secure_url('/'))->hasCrawled(function (SitemapUrl $url) {
-            $arr_leaving_out = [];
-            $laravelsitemap_leaving_out = config('rvsitebuilder.laravelsitemap.leaving_out');
-            if (trim($laravelsitemap_leaving_out) != '') {
-                $arr_leaving_out = explode(',', $laravelsitemap_leaving_out);
-                if (\count($arr_leaving_out) > 0) {
-                    $arr_leaving_out = array_map('trim', $arr_leaving_out); //trim space in all srray
-                }
-            }
-
-            if (\in_array($url->segment(1), $arr_leaving_out, true)) {
-                return;
-            }
-
-            return $url;
-        })->writeToFile($this->path_sitemap);
-
-        return true;
-    }
-
-    /**
-     * getSitemapFileDescription.
-     *
-     * @param path_sitemap = path to sitemap file
-     * @param mixed $path
-     *
-     * @return
-     */
-    public function getSitemapFileDescription($path): string
-    {
-        $last_created = '';
-        if (file_exists($path)) {
-            $dt = date('Y-m-d H:i:s', filemtime($path));
-            $dt = Date::parse($dt)->timezone('Asia/Bangkok')->format('d/m/Y H:i:s');
-            $last_created = '<a href="' . secure_url('/') . '/' . $path . "\" target=\"_blank\">${path}</a> was last modified: " . $dt . '
-      <a href="' . route('admin.laravelsitemap.laravelsitemap.download') . '" target="_blank">Download</a>';
-        }
-
-        return $last_created;
     }
 }
