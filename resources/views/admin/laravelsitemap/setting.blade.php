@@ -100,7 +100,7 @@
 @endsection
 
 @push('package-scripts')
-<script>
+<script nonce="{{ csrf_token() }}">
 $('#sitemapSetup').on('click', function() {
   statusAnimate('wait')
   $('#sitemapSetup').attr('disabled', true) // disabled button

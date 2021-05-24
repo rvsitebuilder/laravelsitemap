@@ -4,6 +4,7 @@ namespace Rvsitebuilder\Laravelsitemap\Lib;
 
 use Illuminate\Support\Facades\Date;
 use Spatie\Sitemap\SitemapGenerator;
+use Spatie\Sitemap\Tags\Url;
 
 class CreateSiteMap
 {
@@ -30,13 +31,14 @@ class CreateSiteMap
 
     public static function createSitemapFile($pathSitemap): bool
     {
-        SitemapGenerator::create(secure_url('/'))->hasCrawled(function (SitemapUrl $url) {
+        SitemapGenerator::create(secure_url('/'))->hasCrawled(function (Url $url) {
             $arr_leaving_out = [];
             $laravelsitemap_leaving_out = config('rvsitebuilder.laravelsitemap.leaving_out');
             if (trim($laravelsitemap_leaving_out) != '') {
                 $arr_leaving_out = explode(',', $laravelsitemap_leaving_out);
                 if (\count($arr_leaving_out) > 0) {
-                    $arr_leaving_out = array_map('trim', $arr_leaving_out); //trim space in all srray
+                    //trim space in all array
+                    $arr_leaving_out = array_map('trim', $arr_leaving_out);
                 }
             }
 
