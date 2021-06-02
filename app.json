@@ -1,23 +1,25 @@
 {
     "name": "rvsitebuilder/laravelsitemap",
     "alias": "Laravel Sitemap",
-    "description": "",
-    "keywords": [],
+    "description": "Generate sitemap.xml and submit to google automatically",
+    "keywords": ["laravel", "laravelsitemap", "sitemap"],
     "app-launcher": 1,
     "app-launcher-route": "admin.laravelsitemap.laravelsitemap.index",
     "icon": "/vendor/rvsitebuilder/laravelsitemap/images/icon-app_laravelsitemap.png",
     "require": {
-    	"rvsitebuilder/framework": "0.1.0",
+        "rvsitebuilder/framework": "0.1.0",
         "rvsitebuilder/core": "^0.1.0",
-        "rvsitebuilder/wysiwyg": "^0.1.0"    
+        "rvsitebuilder/wysiwyg": "^0.1.0"
     },
-    "require-dev" : {
-    },
-    "admin-menu": [{
-        "name": "Generate sitemap",
-        "link": "admin.laravelsitemap.laravelsitemap.index"
-    }, {
-        "name": "Sitemap setting",
-        "link": "admin.laravelsitemap.setting.index"
-    }]
+    "require-dev": {},
+    "admin-menu": [
+        {
+            "name": "Generate sitemap",
+            "link": "admin.laravelsitemap.laravelsitemap.index"
+        },
+        {
+            "name": "Sitemap setting",
+            "link": "admin.laravelsitemap.setting.index"
+        }
+    ]
 }
