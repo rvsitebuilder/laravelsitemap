@@ -12,7 +12,7 @@ class SaveSettingRequest extends FormRequest
     public function rules(): array
     {
         return [
-                'setting_data' => 'required',
+            'setting_data' => 'required',
         ];
     }
 
@@ -24,7 +24,7 @@ class SaveSettingRequest extends FormRequest
     public function messages(): array
     {
         return [
-                'setting_data.required' => 'The "setting_data" field is required.',
+            'setting_data.required' => 'The "setting_data" field is required.',
         ];
     }
 }

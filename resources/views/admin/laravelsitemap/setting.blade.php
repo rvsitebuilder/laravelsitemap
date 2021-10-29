@@ -28,7 +28,7 @@
     <div class="uk-form-controls">
       <div class="uk-grid">
         <div class="uk-width-4-10">
-          <input type="number" name="setting_connect_timeout" id="setting_connect_timeout" value="@if(isset($setting_data['laravelsitemap_CONNECT_TIMEOUT'])){{$setting_data['laravelsitemap_CONNECT_TIMEOUT']}}@endif" class="uk-form-width-medium">
+          <input type="number" name="setting_connect_timeout" id="setting_connect_timeout" value="@isset($setting_data['laravelsitemap_CONNECT_TIMEOUT']) {{$setting_data['laravelsitemap_CONNECT_TIMEOUT']}} @endisset " class="uk-form-width-medium">
         </div>
         <div class="uk-width-6-10">
           <span class="uk-h6">
@@ -45,7 +45,7 @@
     <div class="uk-form-controls">
       <div class="uk-grid">
         <div class="uk-width-4-10">
-          <input type="number" name="setting_timeout" id="setting_timeout" value="@if(isset($setting_data['laravelsitemap_TIMEOUT'])){{$setting_data['laravelsitemap_TIMEOUT']}}@endif" class="uk-form-width-medium">
+          <input type="number" name="setting_timeout" id="setting_timeout" value="@isset($setting_data['laravelsitemap_TIMEOUT']) {{$setting_data['laravelsitemap_TIMEOUT']}} @endisset " class="uk-form-width-medium">
         </div>
         <div class="uk-width-6-10">
           <span class="uk-h6">
@@ -77,7 +77,7 @@
     <div class="uk-form-controls">
       <div class="uk-grid">
         <div class="uk-width-4-10">
-          <input type="text" name="setting_leaving_out" id="setting_leaving_out" value="@if(isset($setting_data['laravelsitemap_leaving_out'])){{$setting_data['laravelsitemap_leaving_out']}}@endif" class="uk-form-width-medium">
+          <input type="text" name="setting_leaving_out" id="setting_leaving_out" value="@isset($setting_data['laravelsitemap_leaving_out']) {{$setting_data['laravelsitemap_leaving_out']}} @endisset " class="uk-form-width-medium">
         </div>
         <div class="uk-width-6-10">
           <span class="uk-h6">
@@ -100,7 +100,7 @@
 @endsection
 
 @push('package-scripts')
-<script>
+<script nonce="{{ csrf_token() }}">
 $('#sitemapSetup').on('click', function() {
   statusAnimate('wait')
   $('#sitemapSetup').attr('disabled', true) // disabled button
